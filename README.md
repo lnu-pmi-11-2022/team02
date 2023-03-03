@@ -1,6 +1,8 @@
-# team02
-- Фединяк Володимир
-- Мулярчик Богдан
-- Якимець Данило
-- Федорняк Сергій
-- Квасниця Уляна
+# Irredeemable (team02)
+
+## Team members
+- Fedyniak Volodymyr
+- Mularchyk Bogdan
+- Yakymets Danylo
+- Fedorniak Serhii
+- Kvasnytsia Uliana
