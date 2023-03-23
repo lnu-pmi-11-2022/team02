@@ -74,7 +74,7 @@ private:
 class FileCollector {
 private:
 	//string is temp while there is no File class
-	vector<string> files;
+	vector<File> files;
 	bool ignoreDirectories;
 public:
 	FileCollector(): ignoreDirectories(false) {}
@@ -85,11 +85,17 @@ public:
 		for (const auto& entry : fs::directory_iterator(rootDir)) {
 			//if is file
 			if (!entry.is_directory()) {
+
+                //get file data
 				//convert path to string
 				string p = entry.path().string();
 
+                //create File object
+                File file;
+                file.setPath(p);
+
 				//add file path to vector
-				files.push_back(p);
+				files.push_back(file);
 			}
 			//if file is directory and directories are not ignored
 			else if (!ignoreDirectories) {
@@ -108,7 +114,7 @@ public:
 		ignoreDirectories = ignore;
 	}
 
-	vector<string> getFiles() {
+	vector<File> getFiles() {
 		return files;
 	}
 };
@@ -120,9 +126,9 @@ int main() {
 	//testing file collector
 	FileCollector collector;
 	collector.findFiles("D:/Homework/");
-	vector<string> vec = collector.getFiles();
-	for (string file : vec) {
-		cout << file << endl;
+	vector<File> vec = collector.getFiles();
+	for (File file : vec) {
+		cout << file.getPath() << endl;
 	}
 
 
