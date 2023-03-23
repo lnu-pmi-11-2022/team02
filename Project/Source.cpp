@@ -20,6 +20,57 @@
 using namespace std;
 namespace fs = std::filesystem;
 
+
+#include <iostream>
+#include <fstream>
+#include <vector>
+using namespace std;
+
+class File
+{
+public:
+    bool operator==(File& file)
+    {
+        bool isCopy = true;
+        string temp1;
+        string temp2;
+        for (int i = 0; i < fileContent.size(); i++)
+        {
+            if (i % 10 != 0 || i == 0)
+            {
+                temp1 += this->fileContent[i];
+                temp2 += file.fileContent[i];
+            }
+            else
+            {
+                if (temp1 != temp2)
+                {
+                    isCopy = false;
+                    return isCopy;
+                }
+                temp1 = "";
+                temp2 = "";
+            }
+
+        }
+        return isCopy;
+    }
+    string get_content(string file)
+    {
+        ifstream ifs("myFile.txt");
+        string content((istreambuf_iterator<char>(ifs)), (istreambuf_iterator<char>()));
+        return content;
+    }
+    void setContent(string fileContent)
+    {
+        this->fileContent = fileContent;
+    }
+private:
+    string fileName;
+    string fileContent;
+};
+
+
 class FileCollector {
 private:
 	//string is temp while there is no File class
@@ -73,5 +124,30 @@ int main() {
 	for (string file : vec) {
 		cout << file << endl;
 	}
+
+
+    File f1;
+    File f2;
+
+    ifstream ifs("video.mp4");
+    string content((istreambuf_iterator<char>(ifs)), (istreambuf_iterator<char>()));
+    ifstream ifsc("video_2.mp4");
+    string content_copy((istreambuf_iterator<char>(ifsc)), (istreambuf_iterator<char>()));
+
+    f1.setContent(content);
+    f2.setContent(content_copy);
+
+    if (f1 == f2)
+    {
+        cout << "Copies";
+    }
+    else
+    {
+        cout << "Not copies";
+    }
+
 	return 1;
+
+
+
 }
