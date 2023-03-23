@@ -76,9 +76,16 @@ private:
 	//string is temp while there is no File class
 	vector<File> files;
 	bool ignoreDirectories;
+    vector<string> avaliableFileTypes;
 public:
-	FileCollector(): ignoreDirectories(false) {}
+	FileCollector(): ignoreDirectories(false) {
+        //add types to vector
+        avaliableFileTypes.push_back(".txt");
+        avaliableFileTypes.push_back(".img");
+        avaliableFileTypes.push_back(".mp4");
+    }
 	FileCollector(bool ignore): ignoreDirectories(ignore) {}
+	FileCollector(bool ignore, vector<string> avFileTypes): ignoreDirectories(ignore), avaliableFileTypes(avFileTypes) {}
 
 	//finds all files in chosen directory
 	bool findFiles(string rootDir) {
@@ -114,6 +121,10 @@ public:
 		ignoreDirectories = ignore;
 	}
 
+    void setAvaliableFileTypes(vector<string> fileTypes) {
+        avaliableFileTypes = fileTypes;
+    }
+
 	vector<File> getFiles() {
 		return files;
 	}
@@ -121,15 +132,15 @@ public:
 
 int main() {
 
-	cout << "Irredeemable - the best team ever!!!" << endl;
+	//cout << "Irredeemable - the best team ever!!!" << endl;
 
-	//testing file collector
-	FileCollector collector;
-	collector.findFiles("D:/Homework/");
-	vector<File> vec = collector.getFiles();
-	for (File file : vec) {
-		cout << file.getPath() << endl;
-	}
+	////testing file collector
+	//FileCollector collector;
+	//collector.findFiles("D:/Homework/");
+	//vector<File> vec = collector.getFiles();
+	//for (File file : vec) {
+	//	cout << file.getPath() << endl;
+	//}
 
 
     File f1;
