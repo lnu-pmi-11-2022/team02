@@ -110,17 +110,17 @@ public:
 		for (const auto& entry : fs::directory_iterator(rootDir)) {
 			//if is file
 			if (!entry.is_directory()) {
+                //convert path to string
+                string p = entry.path().string();
+                //if is one of avaliable file types
+                if (checkAllFileTypes(p)) {
+                    //create File object
+                    File file;
+                    file.setPath(p);
 
-                //get file data
-				//convert path to string
-				string p = entry.path().string();
-
-                //create File object
-                File file;
-                file.setPath(p);
-
-				//add file path to vector
-				files.push_back(file);
+                    //add file path to vector
+                    files.push_back(file);
+                }
 			}
 			//if file is directory and directories are not ignored
 			else if (!ignoreDirectories) {
@@ -134,6 +134,15 @@ public:
 			
 		return true;
 	}
+
+    bool checkAllFileTypes(File file) {
+        for (string type : avaliableFileTypes) {
+            if (!file.isOfType(type)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
 	void setIgnoreDirectories(bool ignore) {
 		ignoreDirectories = ignore;
@@ -161,25 +170,25 @@ int main() {
 	//}
 
 
-    File f1;
-    File f2;
+    //File f1;
+    //File f2;
 
-    ifstream ifs("video.mp4");
-    string content((istreambuf_iterator<char>(ifs)), (istreambuf_iterator<char>()));
-    ifstream ifsc("video_2.mp4");
-    string content_copy((istreambuf_iterator<char>(ifsc)), (istreambuf_iterator<char>()));
+    //ifstream ifs("video.mp4");
+    //string content((istreambuf_iterator<char>(ifs)), (istreambuf_iterator<char>()));
+    //ifstream ifsc("video_2.mp4");
+    //string content_copy((istreambuf_iterator<char>(ifsc)), (istreambuf_iterator<char>()));
 
-    f1.setContent(content);
-    f2.setContent(content_copy);
+    //f1.setContent(content);
+    //f2.setContent(content_copy);
 
-    if (f1 == f2)
-    {
-        cout << "Copies";
-    }
-    else
-    {
-        cout << "Not copies";
-    }
+    //if (f1 == f2)
+    //{
+    //    cout << "Copies";
+    //}
+    //else
+    //{
+    //    cout << "Not copies";
+    //}
 
 	return 1;
 
