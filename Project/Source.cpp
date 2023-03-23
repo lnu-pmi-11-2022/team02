@@ -65,6 +65,24 @@ public:
     {
         this->fileContent = fileContent;
     }
+
+    bool isOfType(string fileType) {
+        string temp = "";
+
+        for (char c : filePath) {
+            if (c == '.') {
+                temp = ".";
+            }
+            else if (temp[0] == 'c') {
+                temp += c;
+            }
+        }
+
+        if (temp == fileType) {
+            return true;
+        }return false;
+    }
+
 private:
     string fileName;
     string fileContent;
