@@ -55,11 +55,19 @@ public:
         }
         return isCopy;
     }
-    string get_content(string file)
+    string getContent(string file)
     {
         ifstream ifs("myFile.txt");
         string content((istreambuf_iterator<char>(ifs)), (istreambuf_iterator<char>()));
         return content;
+    }
+    void setPath(string FP)
+    {
+        this->filePath = FP;
+    }
+    string getPath()
+    {
+        return filePath;
     }
     void setContent(string fileContent)
     {
@@ -84,6 +92,7 @@ public:
     }
 
 private:
+    string filePath;
     string fileName;
     string fileContent;
 };
@@ -172,25 +181,25 @@ int main() {
 	//}
 
 
-    //File f1;
-    //File f2;
+  //File f1;
+  //File f2;
 
-    //ifstream ifs("video.mp4");
-    //string content((istreambuf_iterator<char>(ifs)), (istreambuf_iterator<char>()));
-    //ifstream ifsc("video_2.mp4");
-    //string content_copy((istreambuf_iterator<char>(ifsc)), (istreambuf_iterator<char>()));
+  //ifstream ifs("video.mp4");
+  //string content((istreambuf_iterator<char>(ifs)), (istreambuf_iterator<char>()));
+  //ifstream ifsc("video_2.mp4");
+  //string content_copy((istreambuf_iterator<char>(ifsc)), (istreambuf_iterator<char>()));
 
-    //f1.setContent(content);
-    //f2.setContent(content_copy);
+  //f1.setContent(content);
+  //f2.setContent(content_copy);
 
-    //if (f1 == f2)
-    //{
-    //    cout << "Copies";
-    //}
-    //else
-    //{
-    //    cout << "Not copies";
-    //}
+  //if (f1 == f2)
+  //{
+  //    cout << "Copies";
+  //}
+  //else
+  //{
+  //    cout << "Not copies";
+  //}
 
 	return 1;
 
