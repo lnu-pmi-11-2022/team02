@@ -55,17 +55,26 @@ public:
         }
         return isCopy;
     }
-    string get_content(string file)
+    string getContent(string file)
     {
         ifstream ifs("myFile.txt");
         string content((istreambuf_iterator<char>(ifs)), (istreambuf_iterator<char>()));
         return content;
+    }
+    void setPath(string FP)
+    {
+        this->filePath = FP;
+    }
+    string getPath()
+    {
+        return filePath;
     }
     void setContent(string fileContent)
     {
         this->fileContent = fileContent;
     }
 private:
+    string filePath;
     string fileName;
     string fileContent;
 };
@@ -125,7 +134,7 @@ int main() {
 		cout << file << endl;
 	}
 
-
+    
     File f1;
     File f2;
 
