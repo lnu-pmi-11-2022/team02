@@ -112,12 +112,14 @@ public:
 			if (!entry.is_directory()) {
                 //convert path to string
                 string p = entry.path().string();
-                //if is one of avaliable file types
-                if (checkAllFileTypes(p)) {
-                    //create File object
-                    File file;
-                    file.setPath(p);
 
+                //create File object
+                File file;
+                file.setPath(p);
+
+                //if is one of avaliable file types
+                if (checkAllFileTypes(file)) {
+                    
                     //add file path to vector
                     files.push_back(file);
                 }
