@@ -148,6 +148,7 @@ public:
 		return true;
 	}
 
+    //check if files are one of avaliable types
     bool checkAllFileTypes(File file) {
         for (string type : avaliableFileTypes) {
             if (file.isOfType(type)) {
@@ -155,6 +156,23 @@ public:
             }
         }
         return false;
+    }
+
+    //add new avaliable file type
+    bool addFileType(string fileType) {
+        //if type enetered with .
+        if (fileType[0] == '.') {
+            avaliableFileTypes.push_back(fileType);
+            return true;
+        }
+        //if type enetered without .
+        else if (fileType.find('.') == string::npos) {
+            avaliableFileTypes.push_back("." + fileType);
+            return true;
+        }
+        //wrong input
+        return false;
+
     }
 
 	void setIgnoreDirectories(bool ignore) {
@@ -169,6 +187,7 @@ public:
 		return files;
 	}
 };
+
 
 int main() {
 
