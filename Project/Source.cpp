@@ -81,14 +81,15 @@ public:
             if (c == '.') {
                 temp = ".";
             }
-            else if (temp[0] == 'c') {
+            else if (temp[0] == '.') {
                 temp += c;
             }
         }
 
-        if (temp == fileType) {
+        if (temp == fileType) {         
             return true;
-        }return false;
+        }
+        return false;
     }
 
 private:
@@ -109,6 +110,7 @@ public:
         //add types to vector
         avaliableFileTypes.push_back(".txt");
         avaliableFileTypes.push_back(".img");
+        avaliableFileTypes.push_back(".png");
         avaliableFileTypes.push_back(".mp4");
     }
 	FileCollector(bool ignore): ignoreDirectories(ignore) {}
@@ -148,11 +150,11 @@ public:
 
     bool checkAllFileTypes(File file) {
         for (string type : avaliableFileTypes) {
-            if (!file.isOfType(type)) {
-                return false;
+            if (file.isOfType(type)) {
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
 	void setIgnoreDirectories(bool ignore) {
@@ -170,36 +172,8 @@ public:
 
 int main() {
 
-	//cout << "Irredeemable - the best team ever!!!" << endl;
+	cout << "Irredeemable - the best team ever!!!" << endl;
 
-	////testing file collector
-	//FileCollector collector;
-	//collector.findFiles("D:/Homework/");
-	//vector<File> vec = collector.getFiles();
-	//for (File file : vec) {
-	//	cout << file.getPath() << endl;
-	//}
-
-
-  //File f1;
-  //File f2;
-
-  //ifstream ifs("video.mp4");
-  //string content((istreambuf_iterator<char>(ifs)), (istreambuf_iterator<char>()));
-  //ifstream ifsc("video_2.mp4");
-  //string content_copy((istreambuf_iterator<char>(ifsc)), (istreambuf_iterator<char>()));
-
-  //f1.setContent(content);
-  //f2.setContent(content_copy);
-
-  //if (f1 == f2)
-  //{
-  //    cout << "Copies";
-  //}
-  //else
-  //{
-  //    cout << "Not copies";
-  //}
 
 	return 1;
 
