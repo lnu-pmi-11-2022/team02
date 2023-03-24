@@ -73,6 +73,24 @@ public:
     {
         this->fileContent = fileContent;
     }
+
+    bool isOfType(string fileType) {
+        string temp = "";
+
+        for (char c : filePath) {
+            if (c == '.') {
+                temp = ".";
+            }
+            else if (temp[0] == 'c') {
+                temp += c;
+            }
+        }
+
+        if (temp == fileType) {
+            return true;
+        }return false;
+    }
+
 private:
     string filePath;
     string fileName;
@@ -83,22 +101,35 @@ private:
 class FileCollector {
 private:
 	//string is temp while there is no File class
-	vector<string> files;
+	vector<File> files;
 	bool ignoreDirectories;
+    vector<string> avaliableFileTypes;
 public:
-	FileCollector(): ignoreDirectories(false) {}
+	FileCollector(): ignoreDirectories(false) {
+        //add types to vector
+        avaliableFileTypes.push_back(".txt");
+        avaliableFileTypes.push_back(".img");
+        avaliableFileTypes.push_back(".mp4");
+    }
 	FileCollector(bool ignore): ignoreDirectories(ignore) {}
+	FileCollector(bool ignore, vector<string> avFileTypes): ignoreDirectories(ignore), avaliableFileTypes(avFileTypes) {}
 
 	//finds all files in chosen directory
 	bool findFiles(string rootDir) {
 		for (const auto& entry : fs::directory_iterator(rootDir)) {
 			//if is file
 			if (!entry.is_directory()) {
-				//convert path to string
-				string p = entry.path().string();
+                //convert path to string
+                string p = entry.path().string();
+                //if is one of avaliable file types
+                if (checkAllFileTypes(p)) {
+                    //create File object
+                    File file;
+                    file.setPath(p);
 
-				//add file path to vector
-				files.push_back(p);
+                    //add file path to vector
+                    files.push_back(file);
+                }
 			}
 			//if file is directory and directories are not ignored
 			else if (!ignoreDirectories) {
@@ -113,47 +144,60 @@ public:
 		return true;
 	}
 
+    bool checkAllFileTypes(File file) {
+        for (string type : avaliableFileTypes) {
+            if (!file.isOfType(type)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 	void setIgnoreDirectories(bool ignore) {
 		ignoreDirectories = ignore;
 	}
 
-	vector<string> getFiles() {
+    void setAvaliableFileTypes(vector<string> fileTypes) {
+        avaliableFileTypes = fileTypes;
+    }
+
+	vector<File> getFiles() {
 		return files;
 	}
 };
 
 int main() {
 
-	cout << "Irredeemable - the best team ever!!!" << endl;
+	//cout << "Irredeemable - the best team ever!!!" << endl;
 
-	//testing file collector
-	FileCollector collector;
-	collector.findFiles("D:/Homework/");
-	vector<string> vec = collector.getFiles();
-	for (string file : vec) {
-		cout << file << endl;
-	}
+	////testing file collector
+	//FileCollector collector;
+	//collector.findFiles("D:/Homework/");
+	//vector<File> vec = collector.getFiles();
+	//for (File file : vec) {
+	//	cout << file.getPath() << endl;
+	//}
 
-    
-    File f1;
-    File f2;
 
-    ifstream ifs("video.mp4");
-    string content((istreambuf_iterator<char>(ifs)), (istreambuf_iterator<char>()));
-    ifstream ifsc("video_2.mp4");
-    string content_copy((istreambuf_iterator<char>(ifsc)), (istreambuf_iterator<char>()));
+  //File f1;
+  //File f2;
 
-    f1.setContent(content);
-    f2.setContent(content_copy);
+  //ifstream ifs("video.mp4");
+  //string content((istreambuf_iterator<char>(ifs)), (istreambuf_iterator<char>()));
+  //ifstream ifsc("video_2.mp4");
+  //string content_copy((istreambuf_iterator<char>(ifsc)), (istreambuf_iterator<char>()));
 
-    if (f1 == f2)
-    {
-        cout << "Copies";
-    }
-    else
-    {
-        cout << "Not copies";
-    }
+  //f1.setContent(content);
+  //f2.setContent(content_copy);
+
+  //if (f1 == f2)
+  //{
+  //    cout << "Copies";
+  //}
+  //else
+  //{
+  //    cout << "Not copies";
+  //}
 
 	return 1;
 
