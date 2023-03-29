@@ -127,20 +127,20 @@ int main() {
 	cout << "Irredeemable - the best team ever!!!" << endl;
 
 	//testing file collector
-	FileCollector collector;
-	collector.findFiles("D:/Homework/");
-	vector<string> vec = collector.getFiles();
-	for (string file : vec) {
-		cout << file << endl;
-	}
+	// FileCollector collector;
+	// collector.findFiles("D:/Homework/");
+	// vector<string> vec = collector.getFiles();
+	// for (string file : vec) {
+	// 	cout << file << endl;
+	// }
 
     
     File f1;
     File f2;
 
-    ifstream ifs("video.mp4");
+    ifstream ifs("test.txt");
     string content((istreambuf_iterator<char>(ifs)), (istreambuf_iterator<char>()));
-    ifstream ifsc("video_2.mp4");
+    ifstream ifsc("test copy.txt");
     string content_copy((istreambuf_iterator<char>(ifsc)), (istreambuf_iterator<char>()));
 
     f1.setContent(content);
