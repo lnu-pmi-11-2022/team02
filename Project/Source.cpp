@@ -113,7 +113,13 @@ public:
         avaliableFileTypes.push_back(".png");
         avaliableFileTypes.push_back(".mp4");
     }
-	FileCollector(bool ignore): ignoreDirectories(ignore) {}
+	FileCollector(bool ignore): ignoreDirectories(ignore) {
+        //add types to vector
+        avaliableFileTypes.push_back(".txt");
+        avaliableFileTypes.push_back(".img");
+        avaliableFileTypes.push_back(".png");
+        avaliableFileTypes.push_back(".mp4");
+    }
 	FileCollector(bool ignore, vector<string> avFileTypes): ignoreDirectories(ignore), avaliableFileTypes(avFileTypes) {}
 
 	//finds all files in chosen directory
