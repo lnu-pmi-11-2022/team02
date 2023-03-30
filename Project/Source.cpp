@@ -192,6 +192,15 @@ public:
 	vector<File> getFiles() {
 		return files;
 	}
+
+    friend ostream& operator<<(ostream& os, FileCollector& filecol) {
+        int c = 1;
+        for (File f : filecol.getFiles()) {
+            os <<  c << " - " << f.getPath() << endl;
+            c++;
+        }
+        return os;
+    }
 };
 
 
