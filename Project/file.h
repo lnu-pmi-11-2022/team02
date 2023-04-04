@@ -25,31 +25,25 @@ public:
     {
         string temp1;
         string temp2;
-        for (int i = 0; i < fileContent.size(); i++)
-        {
-            if (i % 10 != 0 || i == 0)
+        ifstream file1(this->filePath);
+        ifstream file2(file.filePath);
+        
+
+        const int n = 1; // number of characters to read per iteration
+        char buffer1[n];
+        char buffer2[n];
+        while (file1.read(buffer1, n)&&file2.read(buffer2,n)) {
+        // do something with the buffer
+            for (int i = 0; i < n; i++)
             {
-                temp1 += this->fileContent[i];
-                temp2 += file.fileContent[i];
-            }
-            else
-            {
-                if (temp1 != temp2)
+                if(buffer1[i]!=buffer2[i])
                 {
                     return false;
                 }
-                temp1 = "";
-                temp2 = "";
             }
-
+        
         }
         return true;
-    }
-    string getContent(string file)
-    {
-        ifstream ifs("myFile.txt");
-        string content((istreambuf_iterator<char>(ifs)), (istreambuf_iterator<char>()));
-        return content;
     }
     void setPath(string FP)
     {
@@ -58,10 +52,6 @@ public:
     string getPath()
     {
         return filePath;
-    }
-    void setContent(string fileContent)
-    {
-        this->fileContent = fileContent;
     }
 
     void removeFile()
@@ -86,12 +76,6 @@ public:
         strcpy(cName,name.c_str());
         remove(cName);
     }
-
-    void setName(string name)
-    {
-        fileName = name;
-    }
-
     //checks file type
     bool isOfType(string fileType) {
         string temp = "";
@@ -114,6 +98,4 @@ public:
 
 private:
     string filePath;
-    string fileName;
-    string fileContent;
 };
