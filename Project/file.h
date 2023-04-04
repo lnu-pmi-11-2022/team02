@@ -7,6 +7,8 @@
 #include <filesystem>
 #include <fstream>
 
+using namespace std;
+
 class File
 {
 public:
