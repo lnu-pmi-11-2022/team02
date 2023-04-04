@@ -8,7 +8,8 @@
 #include <fstream>
 
 using namespace std;
-
+namespace fs = std::filesystem;
+using recursive_directory_iterator = std::filesystem::recursive_directory_iterator;
 class File
 {
 public:
@@ -54,28 +55,35 @@ public:
         return filePath;
     }
 
-    void removeFile()
-    {        
-        int size=0;
-        for (int i = filePath.size(); filePath[i] != '\\' ; i--)
-        {
-                size++;
-        }
-        int start_of_name = filePath.size()-size;
-        string name="";
-        for (int i = start_of_name; i < start_of_name+size; i++)
-        {
-            if(filePath[i]!='\\')
-            {
-            name+= filePath[i];
-            }
-        }
-
-        char *cName = new char[name.size()];
-    
-        strcpy(cName,name.c_str());
-        remove(cName);
+   void removeFile() {
+    int size = 0;
+    for (int i = filePath.size(); filePath[i] != '\\'; i--) {
+        size++;
     }
+    
+    string tempName;
+    for (int i = filePath.size() - size; i < filePath.size(); i++) {
+        if (filePath[i] != '\\')
+            tempName += filePath[i];
+    }
+    
+    string tempPath;
+    for (int i = 0; i < filePath.size() - size; i++) {
+        tempPath += filePath[i];
+    }
+    
+    char* fileName = new char[size + 1];
+    strcpy(fileName, tempName.c_str());
+    
+    for (const auto& dirEntry : fs::recursive_directory_iterator(tempPath)) {
+        if (is_regular_file(dirEntry.path()) && dirEntry.path().filename() == fileName) {
+            remove(dirEntry.path());
+            break;
+        }
+    }
+   
+   
+}
     //checks file type
     bool isOfType(string fileType) {
         string temp = "";
@@ -98,4 +106,5 @@ public:
 
 private:
     string filePath;
+    bool isCopy=false;
 };
