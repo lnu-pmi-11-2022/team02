@@ -19,7 +19,110 @@
 #include <cstring>
 
 using namespace std;
+<<<<<<< dev
 namespace fs = std::filesystem;
+=======
+
+class File
+{
+public:
+
+    friend ostream& operator<<(ostream& os, File& file )
+    {
+        os<< file.filePath;
+        return os;
+    }
+    bool operator==(File& file)
+    {
+        string temp1;
+        string temp2;
+        for (int i = 0; i < fileContent.size(); i++)
+        {
+            if (i % 10 != 0 || i == 0)
+            {
+                temp1 += this->fileContent[i];
+                temp2 += file.fileContent[i];
+            }
+            else
+            {
+                if (temp1 != temp2)
+                {
+                    return false;
+                }
+                temp1 = "";
+                temp2 = "";
+            }
+
+        }
+        return true;
+    }
+    string getContent(string file)
+    {
+        ifstream ifs("myFile.txt");
+        string content((istreambuf_iterator<char>(ifs)), (istreambuf_iterator<char>()));
+        return content;
+    }
+    void setPath(string FP)
+    {
+        this->filePath = FP;
+    }
+    string getPath()
+    {
+        return filePath;
+    }
+    void setContent(string fileContent)
+    {
+        this->fileContent = fileContent;
+    }
+
+    void removeFile()
+    {        
+        int size=0;
+        for (int i = filePath.size(); filePath[i] != '\\' ; i--)
+        {
+                size++;
+        }
+        int start_of_name = filePath.size()-size;
+        string name="";
+        for (int i = start_of_name; i < start_of_name+size; i++)
+        {
+            if(filePath[i]!='\\')
+            {
+            name+= filePath[i];
+            }
+        }
+
+        char *cName = new char[name.size()];
+    
+        strcpy(cName,name.c_str());
+        remove(cName);
+    }
+
+    
+    bool isOfType(string fileType) {
+        string temp = "";
+
+        for (char c : filePath) {
+            if (c == '.') {
+                temp = ".";
+            }
+            else if (temp[0] == '.') {
+                temp += c;
+            }
+        }
+
+        if (temp == fileType) {         
+            return true;
+        }
+        return false;
+    }
+
+private:
+    string filePath;
+    string fileContent;
+};
+
+>>>>>>> local
 
 
 #include <iostream>
@@ -229,6 +332,7 @@ public:
 int main() {
 
 	cout << "Irredeemable - the best team ever!!!" << endl;
+<<<<<<< dan
      
     File f1;
     f1.setPath("E:\\VS Projects\\Team_project\\team02\\Project\\test_1 copy.txt");
@@ -253,6 +357,25 @@ int main() {
     // {
     //     cout<<"False";
     // }
+=======
+<<<<<<< dev
+
+	//testing file collector
+	FileCollector collector;
+	collector.findFiles("D:/Homework/");
+	vector<string> vec = collector.getFiles();
+	for (string file : vec) {
+		cout << file << endl;
+	}
+=======
+     
+    File f1;
+    f1.setPath("E:\\VS Projects\\Team_project\\team02\\Project\\temp1\\temp.txt");
+    f1.removeFile();
+
+    
+>>>>>>> local
+>>>>>>> local
 	return 1;
     
     
