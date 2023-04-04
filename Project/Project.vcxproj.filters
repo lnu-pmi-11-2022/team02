@@ -23,5 +23,8 @@
     <ClInclude Include="filecollector.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="file.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

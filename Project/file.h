@@ -7,9 +7,14 @@
 #include <filesystem>
 #include <fstream>
 
+using namespace std;
+
 class File
 {
 public:
+
+    File() {}
+    File(string path):filePath(path) {}
 
     friend ostream& operator<<(ostream& os, File& file)
     {
@@ -91,9 +96,12 @@ public:
     {
         fileName = name;
     }
+
+    //checks file type
     bool isOfType(string fileType) {
         string temp = "";
 
+        //find last dot and save everything after it
         for (char c : filePath) {
             if (c == '.') {
                 temp = ".";
