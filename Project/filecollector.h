@@ -30,7 +30,7 @@ public:
     }
 	FileCollector(bool ignore, vector<string> avFileTypes): ignoreDirectories(ignore), avaliableFileTypes(avFileTypes) {}
 
-	//finds all files in chosen directory
+	//find all files in chosen directory
 	bool findFiles(string rootDir) {
 		for (const auto& entry : fs::directory_iterator(rootDir)) {
 			//if is file
@@ -39,8 +39,7 @@ public:
                 string p = entry.path().string();
 
                 //create File object
-                File file;
-                file.setPath(p);
+                File file(p);
 
                 //if is one of avaliable file types
                 if (checkAllFileTypes(file)) {
