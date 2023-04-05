@@ -16,17 +16,11 @@ private:
 public:
 	FileCollector(): ignoreDirectories(false) {
         //add types to vector
-        avaliableFileTypes.push_back(".txt");
-        avaliableFileTypes.push_back(".img");
-        avaliableFileTypes.push_back(".png");
-        avaliableFileTypes.push_back(".mp4");
+        avaliableFileTypes = { ".txt", ".img", ".png", ".mp4"};
     }
 	FileCollector(bool ignore): ignoreDirectories(ignore) {
         //add types to vector
-        avaliableFileTypes.push_back(".txt");
-        avaliableFileTypes.push_back(".img");
-        avaliableFileTypes.push_back(".png");
-        avaliableFileTypes.push_back(".mp4");
+        avaliableFileTypes = { ".txt", ".img", ".png", ".mp4" };
     }
 	FileCollector(bool ignore, vector<string> avFileTypes): ignoreDirectories(ignore), avaliableFileTypes(avFileTypes) {}
 
