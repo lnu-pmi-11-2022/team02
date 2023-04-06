@@ -22,19 +22,8 @@
 
 
 using namespace std;
-namespace fs = std::filesystem;
-
-
-
-
+using recursive_directory_iterator = std::filesystem::recursive_directory_iterator;
 int main() {
-
 	cout << "Irredeemable - the best team ever!!!" << endl;
-
-
 	return 1;
-    
-    
-    
-
 }
