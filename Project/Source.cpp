@@ -30,8 +30,8 @@ namespace fs = std::filesystem;
 int main() {
 
 	cout << "Irredeemable - the best team ever!!!" << endl;
-     
-   
+
+
 	return 1;
     
     

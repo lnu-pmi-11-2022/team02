@@ -9,7 +9,6 @@ using namespace std;
 namespace fs = std::filesystem;
 class FileCollector {
 private:
-	//string is temp while there is no File class
     vector<File> files;
 	bool ignoreDirectories;
     vector<string> avaliableFileTypes;
@@ -23,6 +22,17 @@ public:
         avaliableFileTypes = { ".txt", ".img", ".png", ".mp4" };
     }
 	FileCollector(bool ignore, vector<string> avFileTypes): ignoreDirectories(ignore), avaliableFileTypes(avFileTypes) {}
+
+    //constructors with root directory
+    FileCollector(string rootDir) : FileCollector() {
+        findFiles(rootDir);
+    }
+    FileCollector(string rootDir, bool ignore) : FileCollector(ignore) {
+        findFiles(rootDir);
+    }
+    FileCollector(string rootDir, bool ignore, vector<string> avFileTypes) : FileCollector(ignore, avFileTypes) {
+        findFiles(rootDir);
+    }
 
 	//find all files in chosen directory
 	bool findFiles(string rootDir) {
@@ -101,5 +111,9 @@ public:
             c++;
         }
         return os;
+    }
+
+    File& operator[](int i) {
+        return files[i];
     }
 };
