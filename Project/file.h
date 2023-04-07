@@ -84,7 +84,7 @@ public:
    
    
 }
-    void setisCopy(bool newStatus)
+    void setIsCopy(bool newStatus)
    {
     isCopy= newStatus;
    }

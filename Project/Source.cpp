@@ -1,4 +1,3 @@
-//FILE COPIES FINDER
 //Team 02 - Irredeemable
 //Members:
 //Fedyniak Volodymyr
@@ -17,6 +16,7 @@
 #include <filesystem>
 #include "filecollector.h"
 #include "file.h"
+#include "copyfinder.h"
 #include <stdio.h>
 #include <cstring>
 
@@ -25,5 +25,6 @@ using namespace std;
 using recursive_directory_iterator = std::filesystem::recursive_directory_iterator;
 int main() {
 	cout << "Irredeemable - the best team ever!!!" << endl;
+
 	return 1;
 }
