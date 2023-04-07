@@ -84,6 +84,14 @@ public:
    
    
 }
+void setCopy()
+   {
+    isCopy= true;
+   }
+   bool getIsCopy()
+   {
+    return isCopy;
+   }
     //checks file type
     bool isOfType(string fileType) {
         string temp = "";
@@ -106,5 +114,5 @@ public:
 
 private:
     string filePath;
-    bool isCopy=false;
+    bool isCopy = false;
 };
