@@ -7,47 +7,79 @@
 #include "file.h"
 
 using namespace std;
+
 //Copies: Father + vector of his copies
 struct Copies {
-	File Father;
-	vector<File> CopyVector;
+    File Father;
+    vector<File> CopyVector;
 
-	// constructors
-	Copies(File F): Father(F) {}
-	Copies(File F, File C) {
-		Father = F;
-		CopyVector.push_back(C);
-	}
+    // constructors
+    Copies() = default;
 
-	void PrintCopieswFather() {
-		cout << "original file:\n" << Father << endl;
-		cout << "copies:\n";
-		for (int i = 0; i < CopyVector.size(); i++) {
-			cout << CopyVector[i]<<endl;
-		}
-	}
-	void AddCopyToFather(File copy) {
-		CopyVector.push_back(copy);
-	}
+    Copies(File F) : Father(F) {}
+
+    Copies(File F, File C) {
+        Father = F;
+        CopyVector.push_back(C);
+    }
+
+    void PrintCopiesFather() {
+        cout << "Original file:\n" << Father << endl;
+        cout << "Copies:\n";
+        for (int i = 0; i < CopyVector.size(); i++) {
+            cout << CopyVector[i] << endl;
+        }
+        cout << endl;
+    }
+
+    void AddCopyToFather(File copy) {
+        CopyVector.push_back(copy);
+    }
+
 };
-
-//func is copy that checks and sets a bool field of file to true
-//maybe it should be in "for" 
 
 
 class CopyDetector {
 private:
-	vector<Copies> CopyPairs;
-	
+    vector<Copies> CopyPairs;
 public:
-	CopyDetector(){}
 
-	//add copy to te vector of copies 
-	void AddToCVector(File father, File copy) {
-		if (CopyPairs.empty() || CopyPairs.back().Father != father) 
-			CopyPairs.push_back(Copies(father, copy));
-		else {
-			CopyPairs.back().AddCopyToFather(copy);
-		}
-	}
+    //Basic method for selecting copies and parent elements
+    vector<Copies> CopyDetect(vector<File> files) {
+        for (int i = 0; i < files.size(); i++) {
+
+            //Ignoring file copies
+            if (files[i].getIsCopy()) {
+                continue;
+            }
+            //Creating a parent structure
+            Copies temp(files[i]);
+            //Selection of copies from the i+1 (i - position of the parent) position to the end of the files vector
+            for (int j = i + 1; j < files.size(); j++) {
+                //Ignoring file copies
+                if (files[j].getIsCopy()) {
+                    continue;
+                }
+                //Check if CopyPair is not empty
+                if (!CopyPairs.empty()) {
+                    //Check if file[j] is not a parent
+                    for (int q = 0; q < CopyPairs.size() - 1; q++) {
+                        if (CopyPairs[q].Father == files[j]) {
+                            continue;
+                        }
+                    }
+                }
+                //Comparison of file[j] with parent file[i]
+                if (files[j] == files[i]) {
+                    temp.AddCopyToFather(files[j]);
+                    files[j].setIsCopy(true);
+                }
+            }
+            //Adding a temporary structure with parent and its copies to CopyPairs vector
+            CopyPairs.push_back(temp);
+
+        }
+        return CopyPairs;
+    }
+
 };
