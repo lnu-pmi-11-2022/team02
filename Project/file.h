@@ -84,9 +84,9 @@ public:
    
    
 }
-void setCopy()
+    void setisCopy(bool newStatus)
    {
-    isCopy= true;
+    isCopy= newStatus;
    }
    bool getIsCopy()
    {
