@@ -60,15 +60,7 @@ public:
                 if (files[j].getIsCopy()) {
                     continue;
                 }
-                //Check if CopyPair is not empty
-                if (!CopyPairs.empty()) {
-                    //Check if file[j] is not a parent
-                    for (int q = 0; q < CopyPairs.size() - 1; q++) {
-                        if (CopyPairs[q].Father == files[j]) {
-                            continue;
-                        }
-                    }
-                }
+                
                 //Comparison of file[j] with parent file[i]
                 if (files[j] == files[i]) {
                     temp.AddCopyToFather(files[j]);
