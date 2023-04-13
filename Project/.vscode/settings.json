@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "algorithm": "cpp",
+        "filesystem": "cpp",
+        "cstring": "cpp",
+        "sstream": "cpp"
+    }
+}

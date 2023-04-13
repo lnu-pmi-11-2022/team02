@@ -8,7 +8,8 @@
 #include <fstream>
 
 using namespace std;
-
+namespace fs = std::filesystem;
+using recursive_directory_iterator = std::filesystem::recursive_directory_iterator;
 class File
 {
 public:
@@ -25,31 +26,25 @@ public:
     {
         string temp1;
         string temp2;
-        for (int i = 0; i < fileContent.size(); i++)
-        {
-            if (i % 10 != 0 || i == 0)
+        ifstream file1(this->filePath);
+        ifstream file2(file.filePath);
+        
+
+        const int n = 1; // number of characters to read per iteration
+        char buffer1[n];
+        char buffer2[n];
+        while (file1.read(buffer1, n)&&file2.read(buffer2,n)) {
+        // do something with the buffer
+            for (int i = 0; i < n; i++)
             {
-                temp1 += this->fileContent[i];
-                temp2 += file.fileContent[i];
-            }
-            else
-            {
-                if (temp1 != temp2)
+                if(buffer1[i]!=buffer2[i])
                 {
                     return false;
                 }
-                temp1 = "";
-                temp2 = "";
             }
-
+        
         }
         return true;
-    }
-    string getContent(string file)
-    {
-        ifstream ifs("myFile.txt");
-        string content((istreambuf_iterator<char>(ifs)), (istreambuf_iterator<char>()));
-        return content;
     }
     void setPath(string FP)
     {
@@ -59,44 +54,44 @@ public:
     {
         return filePath;
     }
-    void setContent(string fileContent)
-    {
-        this->fileContent = fileContent;
+
+   void removeFile() {
+    int size = 0;
+    for (int i = filePath.size(); filePath[i] != '\\'; i--) {
+        size++;
     }
-
-    void removeFile()
-    {
-
-        string revName = "";
-        for (int i = filePath.size(); filePath[i] != '\\'; i--)
-        {
-            if (filePath[i] != 0 && filePath[i] != '\\')
-            {
-                revName += filePath[i];
-            }
-
+    
+    string tempName;
+    for (int i = filePath.size() - size; i < filePath.size(); i++) {
+        if (filePath[i] != '\\')
+            tempName += filePath[i];
+    }
+    
+    string tempPath;
+    for (int i = 0; i < filePath.size() - size; i++) {
+        tempPath += filePath[i];
+    }
+    
+    char* fileName = new char[size + 1];
+    strcpy(fileName, tempName.c_str());
+    
+    for (const auto& dirEntry : fs::recursive_directory_iterator(tempPath)) {
+        if (is_regular_file(dirEntry.path()) && dirEntry.path().filename() == fileName) {
+            remove(dirEntry.path());
+            break;
         }
-        string name = "";
-        for (int i = revName.size(); i > -1; i--)
-        {
-            if (revName[i] != 0 && revName[i] != '\\')
-            {
-                name += revName[i];
-            }
-
-        }
-
-        char* cName = new char[name.size()];
-
-        strcpy(cName, name.c_str());
-        remove(cName);
     }
-
-    void setName(string name)
-    {
-        fileName = name;
-    }
-
+   
+   
+}
+    void setIsCopy(bool newStatus)
+   {
+    isCopy= newStatus;
+   }
+   bool getIsCopy()
+   {
+    return isCopy;
+   }
     //checks file type
     bool isOfType(string fileType) {
         string temp = "";
@@ -119,6 +114,5 @@ public:
 
 private:
     string filePath;
-    string fileName;
-    string fileContent;
+    bool isCopy = false;
 };
