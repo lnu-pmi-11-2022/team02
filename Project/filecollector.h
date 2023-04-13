@@ -13,23 +13,28 @@ private:
 	bool ignoreDirectories;
     vector<string> avaliableFileTypes;
 public:
+    //default constructor
 	FileCollector(): ignoreDirectories(false) {
         //add types to vector
         avaliableFileTypes = { ".txt", ".img", ".png", ".mp4"};
     }
+    //constructor with ignore directories
 	FileCollector(bool ignore): ignoreDirectories(ignore) {
         //add types to vector
         avaliableFileTypes = { ".txt", ".img", ".png", ".mp4" };
     }
+    //constructor with ignore directories and avaliable types
 	FileCollector(bool ignore, vector<string> avFileTypes): ignoreDirectories(ignore), avaliableFileTypes(avFileTypes) {}
 
-    //constructors with root directory
+    //constructor with root directory
     FileCollector(string rootDir) : FileCollector() {
         findFiles(rootDir);
     }
+    //constructor with root directory, ignore directories
     FileCollector(string rootDir, bool ignore) : FileCollector(ignore) {
         findFiles(rootDir);
     }
+    //constructor with root directory, ignore directories and avaliable types
     FileCollector(string rootDir, bool ignore, vector<string> avFileTypes) : FileCollector(ignore, avFileTypes) {
         findFiles(rootDir);
     }
@@ -100,6 +105,7 @@ public:
         avaliableFileTypes = fileTypes;
     }
 
+    //returns vector of files of type File
 	vector<File> getFiles() {
 		return files;
 	}
@@ -114,6 +120,13 @@ public:
     }
 
     File& operator[](int i) {
+        if (i >= files.size()) {
+            //create error text
+            ostringstream os;
+            os << "Can`t get File by index - " << i << " is out of range. [Vector size: " << files.size() << "]";
+
+            throw(invalid_argument(os.str()));
+        }
         return files[i];
     }
 };
