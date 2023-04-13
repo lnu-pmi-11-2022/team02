@@ -17,6 +17,7 @@
 #include "filecollector.h"
 #include "file.h"
 #include "copyfinder.h"
+#include "menu.h"
 #include <stdio.h>
 #include <cstring>
 
