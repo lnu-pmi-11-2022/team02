@@ -114,6 +114,13 @@ public:
     }
 
     File& operator[](int i) {
+        if (i >= files.size()) {
+            //create error text
+            ostringstream os;
+            os << "Can`t get File by index - " << i << " is out of range. [Vector size: " << files.size() << "]";
+
+            throw(invalid_argument(os.str()));
+        }
         return files[i];
     }
 };
