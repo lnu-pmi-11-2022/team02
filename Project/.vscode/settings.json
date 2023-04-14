@@ -3,6 +3,10 @@
         "algorithm": "cpp",
         "filesystem": "cpp",
         "cstring": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "*.tcc": "cpp",
+        "iostream": "cpp",
+        "stdexcept": "cpp",
+        "functional": "cpp"
     }
 }

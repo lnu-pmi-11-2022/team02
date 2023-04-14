@@ -24,11 +24,11 @@ public:
     }
     bool operator==(File& file)
     {
-        string temp1;
-        string temp2;
         ifstream file1(this->filePath);
         ifstream file2(file.filePath);
         
+        file1 >> noskipws;
+        file2 >> noskipws;
 
         const int n = 1; // number of characters to read per iteration
         char buffer1[n];
