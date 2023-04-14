@@ -22,7 +22,7 @@ public:
         os << file.filePath;
         return os;
     }
-    bool operator==(File& file)
+   bool operator==(File& file)
     {
         ifstream file1(this->filePath);
         ifstream file2(file.filePath);
@@ -84,9 +84,9 @@ public:
    
    
 }
-void setCopy()
+    void setIsCopy(bool newStatus)
    {
-    isCopy= true;
+    isCopy= newStatus;
    }
    bool getIsCopy()
    {
