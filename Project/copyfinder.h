@@ -23,7 +23,7 @@ struct Copies {
         CopyVector.push_back(C);
     }
 
-    void PrintCopiesFather() {
+    void printCopiesFather() {
         cout << "Original file:\n" << Father << endl;
         cout << "Copies:\n";
         for (int i = 0; i < CopyVector.size(); i++) {
@@ -32,7 +32,7 @@ struct Copies {
         cout << endl;
     }
 
-    void AddCopyToFather(File copy) {
+    void addCopyToFather(File copy) {
         CopyVector.push_back(copy);
     }
 
@@ -45,7 +45,7 @@ private:
 public:
 
     //Basic method for selecting copies and parent elements
-    vector<Copies> CopyDetect(vector<File> files) {
+    vector<Copies> detector(vector<File> files) {
         for (int i = 0; i < files.size(); i++) {
 
             //Ignoring file copies
@@ -60,18 +60,9 @@ public:
                 if (files[j].getIsCopy()) {
                     continue;
                 }
-                //Check if CopyPair is not empty
-                if (!CopyPairs.empty()) {
-                    //Check if file[j] is not a parent
-                    for (int q = 0; q < CopyPairs.size() - 1; q++) {
-                        if (CopyPairs[q].Father == files[j]) {
-                            continue;
-                        }
-                    }
-                }
                 //Comparison of file[j] with parent file[i]
                 if (files[j] == files[i]) {
-                    temp.AddCopyToFather(files[j]);
+                    temp.addCopyToFather(files[j]);
                     files[j].setIsCopy(true);
                 }
             }
