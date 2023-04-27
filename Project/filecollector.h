@@ -45,33 +45,40 @@ public:
 
 	//find all files in chosen directory
 	bool findFiles(string rootDir) {
-		for (const auto& entry : fs::directory_iterator(rootDir)) {
-			//if is file
-			if (!entry.is_directory()) {
-                //convert path to string
-                string p = entry.path().string();
+        try {
+		    for (const auto& entry : fs::directory_iterator(rootDir)) {
+			    //if is file
+			    if (!entry.is_directory()) {
+                    //convert path to string
+                    string p = entry.path().string();
 
-                //create File object
-                File file(p);
+                    //create File object
+                    File file(p);
 
-                //if is one of avaliable file types
-                if (checkAllFileTypes(file)) {
+                    //if is one of avaliable file types
+                    if (checkAllFileTypes(file)) {
                     
-                    //add file path to vector
-                    files.push_back(file);
-                }
-			}
-			//if file is directory and directories are not ignored
-			else if (!ignoreDirectories) {
-				//convert path to string
-				string p = entry.path().string();
+                        //add file path to vector
+                        files.push_back(file);
+                    }
+			    }
+			    //if file is directory and directories are not ignored
+			    else if (!ignoreDirectories) {
+				    //convert path to string
+				    string p = entry.path().string();
 
-				//go into this directory
-				findFiles(p);
-			}
-		}
+				    //go into this directory
+				    findFiles(p);
+			    }
+		    }
+		    return true;
+        }
+        //directory not found
+        catch (filesystem::filesystem_error& e) {
+            cerr << "Wrong path: " << rootDir << " such directory could not be found" << endl;
+            return false;
+        }
 			
-		return true;
 	}
 
     //check if files are one of avaliable types
