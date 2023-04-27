@@ -30,6 +30,10 @@ public:
     FileCollector(string rootDir) : FileCollector() {
         findFiles(rootDir);
     }
+    //constructor with root directory based on const char array
+    FileCollector(const char rootDir[]) : FileCollector() {
+        findFiles((string)rootDir);
+    }
     //constructor with root directory, ignore directories
     FileCollector(string rootDir, bool ignore) : FileCollector(ignore) {
         findFiles(rootDir);
