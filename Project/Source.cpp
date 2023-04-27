@@ -26,9 +26,5 @@ using namespace std;
 using recursive_directory_iterator = std::filesystem::recursive_directory_iterator;
 int main() {
 	cout << "Irredeemable - the best team ever!!!" << endl;
-<<<<<<< HEAD
-=======
-
->>>>>>> 6ff9b76092cc0fe5024fb1041723cb57db097ed1
 	return 1;
 }
