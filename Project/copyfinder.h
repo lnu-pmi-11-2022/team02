@@ -26,7 +26,7 @@ struct Copies {
     void addCopyToFather(File copy) {
         CopyVector.push_back(copy);
     }
-
+    friend ostream& operator<<(ostream& os, const Copies& copies);
 };
 //output for structure
 ostream& operator<<(ostream& os, const Copies& copies) {
@@ -43,12 +43,14 @@ class CopyDetector {
 private:
     vector<Copies> CopyPairs;
 public:
-
+    CopyDetector(){
+        CopyPairs.resize(0);
+    }
     //Basic method for selecting copies and parent elements
-    void detector(FileCollector collector) {
-        vector<File> files = collector.getFiles();
+    void detector(vector<File> files) {
+        bool flag;
         for (int i = 0; i < files.size(); i++) {
-
+            flag = false;
             //Ignoring file copies
             if (files[i].getIsCopy()) {
                 continue;
@@ -63,12 +65,18 @@ public:
                 }
                 //Comparison of file[j] with parent file[i]
                 if (files[j] == files[i]) {
-                    temp.addCopyToFather(files[j]);
                     files[j].setIsCopy(true);
+                    temp.addCopyToFather(files[j]);
+                    flag = true;
                 }
             }
-            //Adding a temporary structure with parent and its copies to CopyPairs vector
-            CopyPairs.push_back(temp);
+            //Adding a temporary structure with parent and its copies to CopyPairs vector  if flag is true
+            if(flag){
+                CopyPairs.push_back(temp);
+            }
+            else{
+                continue;
+            }
 
         }
     }

@@ -89,7 +89,8 @@ public:
 
 	vector<Copies> GetCopies() {
 		CopyDetector copyDetector;
-		vector<Copies>copies=copyDetector.CopyDetect(GetFilesFromRootDir());
+        copyDetector.detector(GetFilesFromRootDir());
+		vector<Copies>copies= copyDetector.getCopyPairs();
 		return copies;
 
 	}
