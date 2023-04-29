@@ -23,21 +23,21 @@ struct Copies {
         CopyVector.push_back(C);
     }
 
-    void PrintCopiesFather() {
-        cout << "Original file:\n" << Father << endl;
-        cout << "Copies:\n";
-        for (int i = 0; i < CopyVector.size(); i++) {
-            cout << CopyVector[i] << endl;
-        }
-        cout << endl;
-    }
-
-    void AddCopyToFather(File copy) {
+    void addCopyToFather(File copy) {
         CopyVector.push_back(copy);
     }
 
 };
-
+//output for structure
+ostream& operator<<(ostream& os, const Copies& copies) {
+    os << "Original file:\n" << copies.Father << endl;
+    os << "Copies:\n";
+    for (int i = 0; i < copies.CopyVector.size(); i++) {
+        os << copies.CopyVector[i] << endl;
+    }
+    os << endl;
+    return os;
+}
 
 class CopyDetector {
 private:
@@ -45,7 +45,8 @@ private:
 public:
 
     //Basic method for selecting copies and parent elements
-    vector<Copies> CopyDetect(vector<File> files) {
+    void detector(FileCollector collector) {
+        vector<File> files = collector.getFiles();
         for (int i = 0; i < files.size(); i++) {
 
             //Ignoring file copies
@@ -60,10 +61,9 @@ public:
                 if (files[j].getIsCopy()) {
                     continue;
                 }
-                
                 //Comparison of file[j] with parent file[i]
                 if (files[j] == files[i]) {
-                    temp.AddCopyToFather(files[j]);
+                    temp.addCopyToFather(files[j]);
                     files[j].setIsCopy(true);
                 }
             }
@@ -71,7 +71,63 @@ public:
             CopyPairs.push_back(temp);
 
         }
+    }
+
+    void deleteAllCopies(){
+        //We go to CopyPairs
+        for(int i = 0; i < CopyPairs.size(); i++){
+            //We go to CopyPairs(Father and CopyVector) -> CopyVector
+            for(int j = 0; j<CopyPairs[i].CopyVector.size();j++){
+                //We go to CopyPairs(Father and CopyVector) -> CopyVector -> File -> remove
+                CopyPairs[i].CopyVector[j].removeFile();
+            }
+            //Clear CopyVector after remove
+            CopyPairs[i].CopyVector.clear();
+        }
+    }
+
+    void deleteFatherCopies(File father){
+        //flag for exception
+        bool flag = false;
+        //tag for clearing CopyVector
+        bool tag = false;
+        try {
+            //We go to CopyPairs
+            for (int i = 0; i < CopyPairs.size(); i++) {
+                //We go to CopyPairs(Father and CopyVector) -> Father and compare with input File father
+                if (CopyPairs[i].Father == father) {
+                    //If equal -> remove copies
+                    for (int j = 0; j < CopyPairs[i].CopyVector.size(); j++) {
+                        CopyPairs[i].CopyVector[j].removeFile();
+                        tag = true;
+                    }
+                    if(tag){
+                        //Clear CopyVector after remove
+                        CopyPairs[i].CopyVector.clear();
+                    }
+                    flag = true;
+                    break;
+                }
+            }
+            if(!flag){
+                //If File father is not in CopyPair->Father
+                throw invalid_argument("Invalid file uploaded");
+            }
+        }
+        catch (string& e){
+            cerr<<e<<endl;
+        }
+    }
+    //Get CopyPairs
+    vector<Copies> getCopyPairs(){
         return CopyPairs;
+    };
+    //output for all pairs of copies
+    friend ostream& operator<<(ostream& os, const CopyDetector& copyPairs) {
+        for (int i = 0; i < copyPairs.CopyPairs.size(); i++) {
+            os << copyPairs.CopyPairs[i];
+        }
+        return os;
     }
 
 };

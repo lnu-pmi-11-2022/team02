@@ -20,7 +20,8 @@
 #include "menu.h"
 #include <stdio.h>
 #include <cstring>
-
+#include<iostream>
+using namespace std;
 
 using namespace std;
 using recursive_directory_iterator = std::filesystem::recursive_directory_iterator;
