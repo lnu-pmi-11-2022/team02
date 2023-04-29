@@ -26,18 +26,18 @@ struct Copies {
     void addCopyToFather(File copy) {
         CopyVector.push_back(copy);
     }
-
-};
-//output for structure
-ostream& operator<<(ostream& os, const Copies& copies) {
-    os << "Original file:\n" << copies.Father << endl;
-    os << "Copies:\n";
-    for (int i = 0; i < copies.CopyVector.size(); i++) {
-        os << copies.CopyVector[i] << endl;
+    //output for structure
+    friend ostream& operator<<(ostream& os, Copies& copies) {
+        os << "Original file:\n" << copies.Father << endl;
+        os << "Copies:\n";
+        for (int i = 0; i < copies.CopyVector.size(); i++) {
+            os << copies.CopyVector[i] << endl;
+        }
+        os << endl;
+        return os;
     }
-    os << endl;
-    return os;
-}
+};
+
 
 class CopyDetector {
 private:
@@ -123,7 +123,7 @@ public:
         return CopyPairs;
     };
     //output for all pairs of copies
-    friend ostream& operator<<(ostream& os, const CopyDetector& copyPairs) {
+    friend ostream& operator<<(ostream& os, CopyDetector& copyPairs) {
         for (int i = 0; i < copyPairs.CopyPairs.size(); i++) {
             os << copyPairs.CopyPairs[i];
         }
