@@ -26,6 +26,10 @@ using namespace std;
 using namespace std;
 using recursive_directory_iterator = std::filesystem::recursive_directory_iterator;
 int main() {
-	cout << "Irredeemable - the best team ever!!!" << endl;
+	Menu menu;
+	menu.opening();
+	menu.getRootDir();
+	menu.findCopies();
+	menu.filesToDelete();
 	return 1;
 }

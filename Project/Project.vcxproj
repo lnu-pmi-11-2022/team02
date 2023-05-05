@@ -24,6 +24,7 @@
   <ItemGroup>
     <ClInclude Include="file.h" />
     <ClInclude Include="filecollector.h" />
+    <ClInclude Include="menu.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

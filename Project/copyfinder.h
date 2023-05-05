@@ -36,6 +36,7 @@ struct Copies {
         }
         os << endl;
         return os;
+    }
 };
 
 
@@ -129,7 +130,7 @@ public:
     //Get CopyPairs
     vector<Copies> getCopyPairs(){
         return CopyPairs;
-    };
+    }
     //output for all pairs of copies
     friend ostream& operator<<(ostream& os, CopyDetector& copyPairs) {
         for (int i = 0; i < copyPairs.CopyPairs.size(); i++) {

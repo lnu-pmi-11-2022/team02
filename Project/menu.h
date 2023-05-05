@@ -9,12 +9,14 @@
 
 using namespace std;
 class Menu {
+	FileCollector fileCollector;
+	CopyDetector copyDetector;
 public:
 	Menu(){}
-	void Opening() {
+	void opening() {
 		cout << "Welcome" << endl << "Team Irredeemable" << endl << "Fedyniak Volodymyr" << endl << "Kvasnytsia Uliana" << endl << "Yakymets Danylo" << endl << "Mularchyk Bohdan" <<endl<< "Fedorniak Serhii" << endl;
 	}
-	bool GetIgnoreDirectories() {
+	bool getIgnoreDirectories() {
 		cout << "Press button" << endl << "1- to ignore directories" << endl << "2- not to ignore directories" << endl;
 		int button;
 		cin >> button;
@@ -26,7 +28,7 @@ public:
 		}
 		else {
 			cout << "Wrong button" << endl;;
-			GetIgnoreDirectories();
+			getIgnoreDirectories();
 		}
 	}
 
@@ -77,26 +79,55 @@ public:
 		}
 	}
 
-	vector<File> GetFilesFromRootDir() {
+	void getRootDir() {
 		cout << "Enter root dir (path):" << endl;
 		string rootDir;
 		cin >> rootDir;
-		FileCollector fileCollector(rootDir, GetIgnoreDirectories(), getAvaliableTypes());
+		fileCollector = new FileCollector(rootDir, getIgnoreDirectories(), getAvaliableTypes());
+		fileCollector.findFiles(rootDir);
 		cout << "Files in "<<rootDir<<endl<<fileCollector;
-		vector<File> files = fileCollector.getFiles();
-		return files;
 	}
 
-	vector<Copies> GetCopies() {
-		CopyDetector copyDetector;
-        copyDetector.detector(GetFilesFromRootDir());
-		vector<Copies>copies= copyDetector.getCopyPairs();
-		return copies;
-
+	void findCopies() {
+		copyDetector.detector(fileCollector.getFiles());
 	}
-		
-		
 
+	void filesToDelete() {
+		cout << copyDetector << endl;
+		cout << "Please enter indexes of original files whose copies you want to delete\n(Enter -1 to delete all)\n";
+		vector<int> inputs;
+		//read input to buffer
+		string buffer;
+		getline(cin >> ws, buffer);
+		istringstream iss(buffer);
+		//go through every input divided by space and put it into int data 
+		int data;
+		while (iss >> data)
+			inputs.push_back(data);
 
-	
+		//input amount exception
+		if (inputs.size() > copyDetector.getCopyPairs().size()) {
+			throw(length_error("Too many indexes"));
+		}
+		//deletion
+		for (int i : inputs) {
+			
+
+			//if input is -1 delete every copy
+			if (i == -1) {
+				copyDetector.deleteAllCopies();
+				cout << "Every copy was successfully deleted" << endl;
+				break;
+			}
+			//index out of range exception
+			if (i >= copyDetector.getCopyPairs().size()) {
+				throw(out_of_range("One of indexes is out of range"));
+			}
+			//get father file from copyDetector
+			File file = copyDetector.getCopyPairs()[i].Father;
+			copyDetector.deleteFatherCopies(file);
+			cout << "Copies of " << file << " were successfully deleted" << endl;
+		}
+		
+	}
 };
