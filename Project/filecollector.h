@@ -121,6 +121,11 @@ public:
 		return files;
 	}
 
+    //returns avaliable file types
+    vector<string> getAvaliableTypes() {
+        return avaliableFileTypes;
+    }
+
     friend ostream& operator<<(ostream& os, FileCollector& filecol) {
         int c = 1;
         for (File f : filecol.getFiles()) {
