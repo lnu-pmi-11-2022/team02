@@ -30,6 +30,11 @@ int main() {
 	menu.opening();
 	menu.getRootDir();
 	menu.findCopies();
-	menu.filesToDelete();
+	if (menu.isAnyCopies()) {
+		menu.filesToDelete();
+	}
+	else {
+		menu.printNoCopiesFound();
+	}
 	return 1;
 }
