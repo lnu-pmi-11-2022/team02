@@ -78,7 +78,7 @@ public:
 	void getRootDir() {
 		cout << "Enter root dir (path):" << endl;
 		string rootDir;
-		cin >> rootDir;
+		getline(cin, rootDir);
 		fileCollector = new FileCollector();
 		fileCollector.setIgnoreDirectories(getIgnoreDirectories());
 		getAvaliableTypes();
