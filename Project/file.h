@@ -12,10 +12,11 @@ namespace fs = std::filesystem;
 using recursive_directory_iterator = std::filesystem::recursive_directory_iterator;
 class File
 {
+
 public:
 
     File() {}
-    File(string path):filePath(path) {}
+    File(string path,int s):filePath(path), size(s) {}
 
     friend ostream& operator<<(ostream& os, File& file)
     {
@@ -111,8 +112,16 @@ public:
         }
         return false;
     }
-
+    int getSize()
+    {
+        return size;
+    }
+    void setSize(int s)
+    {
+        size = s;
+    }
 private:
     string filePath;
     bool isCopy = false;
+    int size;
 };
