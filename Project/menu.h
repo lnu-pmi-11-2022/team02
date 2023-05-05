@@ -32,12 +32,12 @@ public:
 		}
 	}
 
-	vector<string> getAvaliableTypes() {
+	void getAvaliableTypes() {
 		cout<<"Press button" << endl << "1- to add to already possible types" << endl << "2- to add your own types" <<endl<<"3- to use default types"<<endl;
 		int button;
 		cin >> button;
 		if (button == 1) {
-			vector<string> avaliableFileTypes = { ".txt", ".img", ".png", ".mp4" };
+			vector<string> avaliableFileTypes = fileCollector.getAvaliableTypes();
 			int decision;
 			cout << "Avalible types" << endl;
 			for (auto t : avaliableFileTypes) {
@@ -47,31 +47,27 @@ public:
 			do  {
 				cout << "Enter type to add";
 				string type;
-				cin >> type;
-				avaliableFileTypes.push_back(type);
+				getline(cin >> ws, type);
+				fileCollector.addFileType(type);
 				cout << "Press button" << endl << "1-to continue adding types" << endl << "Random key- to stop adding types" << endl;
 				cin>> decision;
 			} while (decision == 1);
-			
-			return avaliableFileTypes;
 		}
 		else if (button == 2) {
 			vector<string> avaliableFileTypes;
+			fileCollector.setAvaliableFileTypes(avaliableFileTypes);
 			int  decision;
 			do {
-				cout << "Enter type to add";
+				cout << "Enter type to add: ";
 				string type;
-				cin >> type;
-				avaliableFileTypes.push_back(type);
+				getline(cin >> ws, type);
+				fileCollector.addFileType(type);
 				cout << "Press button" << endl << "1-to continue adding types" << endl << "Random key- to stop adding types" << endl;
 				cin >> decision;
 			} while (decision == 1);
-
-			return avaliableFileTypes;
 		}
 		else if (button == 3) {
 			vector<string> avaliableFileTypes = { ".txt", ".img", ".png", ".mp4" };
-			return avaliableFileTypes;
 		}
 		else {
 			cout << "Wrong button";
@@ -83,7 +79,9 @@ public:
 		cout << "Enter root dir (path):" << endl;
 		string rootDir;
 		cin >> rootDir;
-		fileCollector = new FileCollector(rootDir, getIgnoreDirectories(), getAvaliableTypes());
+		fileCollector = new FileCollector();
+		fileCollector.setIgnoreDirectories(getIgnoreDirectories());
+		getAvaliableTypes();
 		fileCollector.findFiles(rootDir);
 		cout << "Files in "<<rootDir<<endl<<fileCollector;
 	}
