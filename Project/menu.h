@@ -90,6 +90,21 @@ public:
 		copyDetector.detector(fileCollector.getFiles());
 	}
 
+	//are there files with copies
+	bool isAnyCopies() {
+		for (Copies c : copyDetector.getCopyPairs()) {
+			if (c.CopyVector.size() > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	//print that there is no copies of files found
+	void printNoCopiesFound() {
+		cout << "There are no copies in this directory" << endl;
+	}
+
 	void filesToDelete() {
 		cout << copyDetector << endl;
 		cout << "Please enter indexes of original files whose copies you want to delete\n(Enter -1 to delete all)\n";

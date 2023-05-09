@@ -26,10 +26,21 @@ using namespace std;
 using namespace std;
 using recursive_directory_iterator = std::filesystem::recursive_directory_iterator;
 int main() {
-	Menu menu;
-	menu.opening();
-	menu.getRootDir();
-	menu.findCopies();
-	menu.filesToDelete();
+
+	try {
+		Menu menu;
+		menu.opening();
+		menu.getRootDir();
+		menu.findCopies();
+		if (menu.isAnyCopies()) {
+			menu.filesToDelete();
+		}
+		else {
+			menu.printNoCopiesFound();
+		}
+	}
+	catch (exception& e) {
+		cerr << "Exception: " << e.what() << endl;
+	}
 	return 1;
 }

@@ -44,7 +44,8 @@ public:
     }
 
 	//find all files in chosen directory
-	bool findFiles(string rootDir) {
+    //Parameter inner: if true says that findFiles was called recursively
+	bool findFiles(string rootDir, bool inner = false) {
         try {
 		    for (const auto& entry : fs::directory_iterator(rootDir)) {
 			    //if is file
@@ -52,8 +53,12 @@ public:
                     //convert path to string
                     string p = entry.path().string();
 
+                    //get file size from entry
+                    uintmax_t size = entry.file_size();
+
                     //create File object
-                    File file(p);
+                    File file(p, size);
+
 
                     //if is one of avaliable file types
                     if (checkAllFileTypes(file)) {
@@ -67,10 +72,15 @@ public:
 				    //convert path to string
 				    string p = entry.path().string();
 
-				    //go into this directory
-				    findFiles(p);
+				    //go into this directory with inner flag set to true
+				    findFiles(p, true);
 			    }
 		    }
+            //if no files found and is not inner directory
+            if (files.size() == 0 && !inner) {
+                throw(length_error("No files were found"));
+            }
+
 		    return true;
         }
         //directory not found
@@ -129,7 +139,7 @@ public:
     friend ostream& operator<<(ostream& os, FileCollector& filecol) {
         int c = 1;
         for (File f : filecol.getFiles()) {
-            os <<  c << " - " << f.getPath() << endl;
+            os <<  c << " - " << f << endl;
             c++;
         }
         return os;
