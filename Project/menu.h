@@ -5,6 +5,7 @@
 #include <filesystem>
 #include "file.h"
 #include "filecollector.h"
+#include "copyfinder.h"
 #include<iostream>
 
 using namespace std;
@@ -130,6 +131,7 @@ public:
 			if (i == -1) {
 				copyDetector.deleteAllCopies();
 				cout << "Every copy was successfully deleted" << endl;
+				cout << "You have released " << convertBytes(copyDetector.getReleasedSpace())<<endl;
 				break;
 			}
 			//index out of range exception
@@ -140,6 +142,7 @@ public:
 			File file = copyDetector.getCopyPairs()[i].Father;
 			copyDetector.deleteFatherCopies(file);
 			cout << "Copies of " << file << " were successfully deleted" << endl;
+			cout << "You have released " << convertBytes(copyDetector.getReleasedSpace()) << endl;
 		}
 		
 	}
