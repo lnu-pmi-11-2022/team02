@@ -134,7 +134,7 @@ public:
     //output for all pairs of copies
     friend ostream& operator<<(ostream& os, CopyDetector& copyPairs) {
         for (int i = 0; i < copyPairs.CopyPairs.size(); i++) {
-            os << copyPairs.CopyPairs[i];
+            os << i << " - "<< copyPairs.CopyPairs[i];
         }
         return os;
     }
