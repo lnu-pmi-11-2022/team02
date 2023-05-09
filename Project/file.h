@@ -6,10 +6,42 @@
 #include <cstring>
 #include <filesystem>
 #include <fstream>
+#include <sstream>
 
 using namespace std;
 namespace fs = std::filesystem;
 using recursive_directory_iterator = std::filesystem::recursive_directory_iterator;
+
+//convert int of bytes to user friendly output in b, kb, mb, gb, or tb
+string convertBytes(int bytes) {
+    //constatnts
+    const float tb = 1099511627776;
+    const float gb = 1073741824;
+    const float mb = 1048576;
+    const float kb = 1024;
+
+    //creating string stream and setting precision to 2
+    ostringstream os;
+    os << fixed <<setprecision(2);
+
+    //formatting
+    if (bytes >= tb)
+        os << bytes / tb << "TB";
+    else if (bytes >= gb && bytes < tb)
+        os << bytes / gb << "GB";
+    else if (bytes >= mb && bytes < gb)
+        os << bytes / mb << "MB";
+    else if (bytes >= kb && bytes < mb)
+        os << bytes / kb << "KB";
+    else if (bytes < kb)
+        os << bytes << "B";
+
+    else
+        os << bytes<< "B";
+
+    return os.str();
+}
+
 class File
 {
 
@@ -20,7 +52,7 @@ public:
 
     friend ostream& operator<<(ostream& os, File& file)
     {
-        os << file.filePath << " File size: " << file.size;
+        os << file.filePath << " (" << convertBytes(file.size) << ")";
         return os;
     }
    bool operator==(File& file)
