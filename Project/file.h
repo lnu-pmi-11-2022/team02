@@ -20,7 +20,7 @@ public:
 
     friend ostream& operator<<(ostream& os, File& file)
     {
-        os << file.filePath;
+        os << file.filePath << " File size: " << file.size;
         return os;
     }
    bool operator==(File& file)

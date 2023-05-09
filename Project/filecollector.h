@@ -53,8 +53,12 @@ public:
                     //convert path to string
                     string p = entry.path().string();
 
+                    //get file size from entry
+                    uintmax_t size = entry.file_size();
+
                     //create File object
-                    File file(p);
+                    File file(p, size);
+
 
                     //if is one of avaliable file types
                     if (checkAllFileTypes(file)) {
@@ -135,7 +139,7 @@ public:
     friend ostream& operator<<(ostream& os, FileCollector& filecol) {
         int c = 1;
         for (File f : filecol.getFiles()) {
-            os <<  c << " - " << f.getPath() << endl;
+            os <<  c << " - " << f << endl;
             c++;
         }
         return os;
