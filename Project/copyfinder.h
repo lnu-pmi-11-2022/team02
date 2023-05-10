@@ -43,9 +43,11 @@ struct Copies {
 class CopyDetector {
 private:
     vector<Copies> CopyPairs;
+    int ReleasedSpace;
 public:
     CopyDetector(){
         CopyPairs.resize(0);
+        ReleasedSpace = 0;
     }
     //Basic method for selecting copies and parent elements
     void detector(vector<File> files) {
@@ -88,6 +90,7 @@ public:
             //We go to CopyPairs(Father and CopyVector) -> CopyVector
             for(int j = 0; j<CopyPairs[i].CopyVector.size();j++){
                 //We go to CopyPairs(Father and CopyVector) -> CopyVector -> File -> remove
+                ReleasedSpace+=CopyPairs[i].CopyVector[j].getSize();
                 CopyPairs[i].CopyVector[j].removeFile();
             }
             //Clear CopyVector after remove
@@ -107,6 +110,7 @@ public:
                 if (CopyPairs[i].Father == father) {
                     //If equal -> remove copies
                     for (int j = 0; j < CopyPairs[i].CopyVector.size(); j++) {
+                        ReleasedSpace += CopyPairs[i].CopyVector[j].getSize();
                         CopyPairs[i].CopyVector[j].removeFile();
                         tag = true;
                     }
@@ -118,6 +122,7 @@ public:
                     break;
                 }
             }
+
             if(!flag){
                 //If File father is not in CopyPair->Father
                 throw invalid_argument("Invalid file uploaded");
@@ -130,6 +135,9 @@ public:
     //Get CopyPairs
     vector<Copies> getCopyPairs(){
         return CopyPairs;
+    }
+    int getReleasedSpace() {
+        return ReleasedSpace;
     }
     //output for all pairs of copies
     friend ostream& operator<<(ostream& os, CopyDetector& copyPairs) {
