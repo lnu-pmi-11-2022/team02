@@ -59,7 +59,10 @@ public:
     {
         ifstream file1(this->filePath);
         ifstream file2(file.filePath);
-        
+        if(this->getSize()!=file.getSize())
+        {
+            return false;
+        }
         file1 >> noskipws;
         file2 >> noskipws;
 
@@ -93,13 +96,15 @@ public:
     for (int i = filePath.size(); filePath[i] != '\\'; i--) {
         size++;
     }
-    
+
+    // dividing file name from path
     string tempName;
     for (int i = filePath.size() - size; i < filePath.size(); i++) {
         if (filePath[i] != '\\')
             tempName += filePath[i];
     }
     
+    // temporary folder path where we need to delete file
     string tempPath;
     for (int i = 0; i < filePath.size() - size; i++) {
         tempPath += filePath[i];
