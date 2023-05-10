@@ -8,6 +8,10 @@
 #include <fstream>
 #include <sstream>
 
+//colors
+#define YELLOW_TEXT "\033[33m" 
+#define RESET_COLOR "\033[0m" 
+
 using namespace std;
 namespace fs = std::filesystem;
 using recursive_directory_iterator = std::filesystem::recursive_directory_iterator;
@@ -52,7 +56,8 @@ public:
 
     friend ostream& operator<<(ostream& os, File& file)
     {
-        os << file.filePath << " (" << convertBytes(file.size) << ")";
+        //change colors to yellow and back
+        os << file.filePath << " (" << YELLOW_TEXT << convertBytes(file.size) << RESET_COLOR <<")";
         return os;
     }
    bool operator==(File& file)
