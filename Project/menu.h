@@ -51,7 +51,7 @@ public:
 		cin >> button;
 		if (button == 1) {
 			vector<string> avaliableFileTypes = fileCollector.getAvaliableTypes();
-			int decision;
+			char decision;
 			cout << "Avalible types: " << endl;
 			for (auto t : avaliableFileTypes) {
 				cout << t << " ";
@@ -64,12 +64,12 @@ public:
 				fileCollector.addFileType(type);
 				cout << GREEN_BACK << BRIGHT_WHITE_TEXT <<"Press button" << endl << "1-to continue adding types" << endl << "Random key- to stop adding types" << RESET_COLOR << endl;
 				cin>> decision;
-			} while (decision == 1);
+			} while (decision == '1');
 		}
 		else if (button == 2) {
 			vector<string> avaliableFileTypes;
 			fileCollector.setAvaliableFileTypes(avaliableFileTypes);
-			int  decision;
+			char decision;
 			do {
 				cout << GREEN_BACK << BRIGHT_WHITE_TEXT << "Enter type to add: " << RESET_COLOR;
 				string type;
@@ -77,7 +77,7 @@ public:
 				fileCollector.addFileType(type);
 				cout << GREEN_BACK << BRIGHT_WHITE_TEXT << "Press button" << endl << "1-to continue adding types" << endl << "Random key- to stop adding types" << RESET_COLOR << endl;
 				cin >> decision;
-			} while (decision == 1);
+			} while (decision == '1');
 		}
 		else if (button == 3) {
 			vector<string> avaliableFileTypes = { ".txt", ".img", ".png", ".mp4" };
@@ -92,7 +92,11 @@ public:
 		cout << GREEN_BACK << BRIGHT_WHITE_TEXT << "Enter root dir (path):"<< RESET_COLOR << endl;
 		string rootDir;
 		getline(cin, rootDir);
+		//check if directory was found
+		checkDirectory(rootDir);
+
 		fileCollector = new FileCollector();
+		
 		fileCollector.setIgnoreDirectories(getIgnoreDirectories());
 		getAvaliableTypes();
 		fileCollector.findFiles(rootDir);

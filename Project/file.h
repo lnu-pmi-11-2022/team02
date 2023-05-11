@@ -57,7 +57,7 @@ public:
     friend ostream& operator<<(ostream& os, File& file)
     {
         //change colors to yellow and back
-        os << file.filePath << " (" << YELLOW_TEXT << convertBytes(file.size) << RESET_COLOR <<")";
+        os << file.filePath << RESET_COLOR << " (" << YELLOW_TEXT << convertBytes(file.size) << RESET_COLOR <<")";
         return os;
     }
    bool operator==(File& file)

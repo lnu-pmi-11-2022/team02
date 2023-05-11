@@ -40,7 +40,7 @@ int main() {
 		}
 	}
 	catch (exception& e) {
-		cerr << "Exception: " << e.what() << endl;
+		cerr << RED_BACK << BRIGHT_WHITE_TEXT << "Exception: " << e.what() << RESET_COLOR << endl;
 	}
 	return 1;
 }
