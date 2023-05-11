@@ -7,6 +7,18 @@
 #include "filecollector.h"
 #include "copyfinder.h"
 #include<iostream>
+#include <stdlib.h>
+
+//colors
+#define GREEN_TEXT "\033[32m" 
+#define YELLOW_TEXT "\033[33m" 
+#define RESET_COLOR "\033[0m" 
+#define RED_TEXT "\033[31m"
+#define WHITE_TEXT "\033[37m"
+#define BRIGHT_WHITE_TEXT "\033[97m"
+#define GREEN_BACK "\033[42m"
+#define RED_BACK "\033[41m"
+
 
 using namespace std;
 class Menu {
@@ -15,10 +27,10 @@ class Menu {
 public:
 	Menu(){}
 	void opening() {
-		cout << "Welcome" << endl << "Team Irredeemable" << endl << "Fedyniak Volodymyr" << endl << "Kvasnytsia Uliana" << endl << "Yakymets Danylo" << endl << "Mularchyk Bohdan" <<endl<< "Fedorniak Serhii" << endl;
+		cout << YELLOW_TEXT << "Welcome" << endl << "Team Irredeemable" << endl << "Fedyniak Volodymyr" << endl << "Kvasnytsia Uliana" << endl << "Yakymets Danylo" << endl << "Mularchyk Bohdan" <<endl<< "Fedorniak Serhii" << RESET_COLOR << endl;
 	}
 	bool getIgnoreDirectories() {
-		cout << "Press button" << endl << "1- to ignore directories" << endl << "2- not to ignore directories" << endl;
+		cout << GREEN_BACK << BRIGHT_WHITE_TEXT << "Press button" << endl << "1- to ignore directories" << endl << "2- not to ignore directories" << RESET_COLOR << endl;
 		int button;
 		cin >> button;
 		if (button == 1) {
@@ -28,29 +40,29 @@ public:
 			return false;
 		}
 		else {
-			cout << "Wrong button" << endl;;
+			cout << RED_BACK << BRIGHT_WHITE_TEXT << "Wrong button" << RESET_COLOR << endl;;
 			getIgnoreDirectories();
 		}
 	}
 
 	void getAvaliableTypes() {
-		cout<<"Press button" << endl << "1- to add to already possible types" << endl << "2- to add your own types" <<endl<<"3- to use default types"<<endl;
+		cout<< GREEN_BACK << BRIGHT_WHITE_TEXT << "Press button" << endl << "1- to add to already possible types" << endl << "2- to add your own types" <<endl<<"3- to use default types"<< RESET_COLOR <<endl;
 		int button;
 		cin >> button;
 		if (button == 1) {
 			vector<string> avaliableFileTypes = fileCollector.getAvaliableTypes();
 			int decision;
-			cout << "Avalible types" << endl;
+			cout << "Avalible types: " << endl;
 			for (auto t : avaliableFileTypes) {
 				cout << t << " ";
 			}
 			cout<<endl;
 			do  {
-				cout << "Enter type to add";
+				cout << GREEN_BACK << BRIGHT_WHITE_TEXT << "Enter type to add: " << RESET_COLOR;
 				string type;
 				getline(cin >> ws, type);
 				fileCollector.addFileType(type);
-				cout << "Press button" << endl << "1-to continue adding types" << endl << "Random key- to stop adding types" << endl;
+				cout << GREEN_BACK << BRIGHT_WHITE_TEXT <<"Press button" << endl << "1-to continue adding types" << endl << "Random key- to stop adding types" << RESET_COLOR << endl;
 				cin>> decision;
 			} while (decision == 1);
 		}
@@ -59,11 +71,11 @@ public:
 			fileCollector.setAvaliableFileTypes(avaliableFileTypes);
 			int  decision;
 			do {
-				cout << "Enter type to add: ";
+				cout << GREEN_BACK << BRIGHT_WHITE_TEXT << "Enter type to add: " << RESET_COLOR;
 				string type;
 				getline(cin >> ws, type);
 				fileCollector.addFileType(type);
-				cout << "Press button" << endl << "1-to continue adding types" << endl << "Random key- to stop adding types" << endl;
+				cout << GREEN_BACK << BRIGHT_WHITE_TEXT << "Press button" << endl << "1-to continue adding types" << endl << "Random key- to stop adding types" << RESET_COLOR << endl;
 				cin >> decision;
 			} while (decision == 1);
 		}
@@ -71,13 +83,13 @@ public:
 			vector<string> avaliableFileTypes = { ".txt", ".img", ".png", ".mp4" };
 		}
 		else {
-			cout << "Wrong button";
+			cout << RED_BACK << BRIGHT_WHITE_TEXT << "Wrong button" << RESET_COLOR << endl;
 			getAvaliableTypes();
 		}
 	}
 
 	void getRootDir() {
-		cout << "Enter root dir (path):" << endl;
+		cout << GREEN_BACK << BRIGHT_WHITE_TEXT << "Enter root dir (path):"<< RESET_COLOR << endl;
 		string rootDir;
 		getline(cin, rootDir);
 		fileCollector = new FileCollector();
@@ -103,12 +115,12 @@ public:
 
 	//print that there is no copies of files found
 	void printNoCopiesFound() {
-		cout << "There are no copies in this directory" << endl;
+		cout << YELLOW_TEXT << "There are no copies in this directory" << RESET_COLOR << endl;
 	}
 
 	void filesToDelete() {
 		cout << copyDetector << endl;
-		cout << "Please enter indexes of original files whose copies you want to delete\n(Enter -1 to delete all)\n";
+		cout << GREEN_BACK << BRIGHT_WHITE_TEXT << "Please enter indexes of original files whose copies you want to delete" << RESET_COLOR<< endl << GREEN_BACK <<"(Enter -1 to delete all)" << RESET_COLOR << endl;
 		vector<int> inputs;
 		//read input to buffer
 		string buffer;
@@ -130,8 +142,7 @@ public:
 			//if input is -1 delete every copy
 			if (i == -1) {
 				copyDetector.deleteAllCopies();
-				cout << "Every copy was successfully deleted" << endl;
-				cout << "You have released " << convertBytes(copyDetector.getReleasedSpace())<<endl;
+				cout << GREEN_TEXT << "Every copy was successfully deleted" << RESET_COLOR << endl;
 				break;
 			}
 			//index out of range exception
@@ -141,9 +152,11 @@ public:
 			//get father file from copyDetector
 			File file = copyDetector.getCopyPairs()[i].Father;
 			copyDetector.deleteFatherCopies(file);
-			cout << "Copies of " << file << " were successfully deleted" << endl;
-			cout << "You have released " << convertBytes(copyDetector.getReleasedSpace()) << endl;
+			cout << GREEN_TEXT << "Copies of " << file << GREEN_TEXT << " were successfully deleted" << RESET_COLOR << endl;
+			
 		}
-		
+		//change released space color and than change color back
+		cout << "You have released " << GREEN_TEXT << convertBytes(copyDetector.getReleasedSpace()) << endl << RESET_COLOR;
+
 	}
 };
