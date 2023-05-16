@@ -7,6 +7,21 @@
 
 using namespace std;
 namespace fs = std::filesystem;
+
+//check if directory is found
+void checkDirectory(fs::path rootDir) {
+    try {
+
+        //check if works without errors
+        fs::directory_iterator it = fs::directory_iterator(rootDir);
+    }
+    catch (exception& e) {
+        ostringstream os;
+        os << "Wrong path " << rootDir << " directory could not be found" << endl;
+        throw(invalid_argument(os.str()));
+    }
+}
+
 class FileCollector {
 private:
     vector<File> files;
@@ -27,67 +42,63 @@ public:
 	FileCollector(bool ignore, vector<string> avFileTypes): ignoreDirectories(ignore), avaliableFileTypes(avFileTypes) {}
 
     //constructor with root directory
-    FileCollector(string rootDir) : FileCollector() {
+    FileCollector(fs::path rootDir) : FileCollector() {
         findFiles(rootDir);
     }
     //constructor with root directory based on const char array
     FileCollector(const char rootDir[]) : FileCollector() {
-        findFiles((string)rootDir);
+        findFiles((fs::path)rootDir);
     }
     //constructor with root directory, ignore directories
-    FileCollector(string rootDir, bool ignore) : FileCollector(ignore) {
+    FileCollector(fs::path rootDir, bool ignore) : FileCollector(ignore) {
         findFiles(rootDir);
     }
     //constructor with root directory, ignore directories and avaliable types
-    FileCollector(string rootDir, bool ignore, vector<string> avFileTypes) : FileCollector(ignore, avFileTypes) {
+    FileCollector(fs::path rootDir, bool ignore, vector<string> avFileTypes) : FileCollector(ignore, avFileTypes) {
         findFiles(rootDir);
     }
 
 	//find all files in chosen directory
     //Parameter inner: if true says that findFiles was called recursively
-	bool findFiles(string rootDir, bool inner = false) {
-        try {
-		    for (const auto& entry : fs::directory_iterator(rootDir)) {
-			    //if is file
-			    if (!entry.is_directory()) {
-                    //convert path to string
-                    string p = entry.path().string();
+	bool findFiles(fs::path rootDir, bool inner = false) {
 
-                    //get file size from entry
-                    uintmax_t size = entry.file_size();
+		for (const auto& entry : fs::directory_iterator(rootDir)) {
+			//if is file
+			if (!entry.is_directory()) {
+                //convert path to string
+                fs::path p = entry.path().string();
 
-                    //create File object
-                    File file(p, size);
+                //get file size from entry
+                uintmax_t size = entry.file_size();
+
+                //create File object
+                File file(p, size);
 
 
-                    //if is one of avaliable file types
-                    if (checkAllFileTypes(file)) {
+                //if is one of avaliable file types
+                if (checkAllFileTypes(file)) {
                     
-                        //add file path to vector
-                        files.push_back(file);
-                    }
-			    }
-			    //if file is directory and directories are not ignored
-			    else if (!ignoreDirectories) {
-				    //convert path to string
-				    string p = entry.path().string();
+                    //add file path to vector
+                    files.push_back(file);
+                }
+			}
+			//if file is directory and directories are not ignored
+			else if (!ignoreDirectories) {
+				//convert path to string
+                fs::path p = entry.path().string();
 
-				    //go into this directory with inner flag set to true
-				    findFiles(p, true);
-			    }
-		    }
-            //if no files found and is not inner directory
-            if (files.size() == 0 && !inner) {
-                throw(length_error("No files were found"));
-            }
+				//go into this directory with inner flag set to true
+				findFiles(p, true);
+			}
+		}
+        //if no files found and is not inner directory
+        if (files.size() == 0 && !inner) {
+            throw(length_error("No files were found"));
+        }
 
-		    return true;
-        }
-        //directory not found
-        catch (filesystem::filesystem_error& e) {
-            cerr << "Wrong path: " << rootDir << " such directory could not be found" << endl;
-            return false;
-        }
+		return true;
+       
+
 			
 	}
 

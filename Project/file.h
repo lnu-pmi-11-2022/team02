@@ -52,12 +52,12 @@ class File
 public:
 
     File() {}
-    File(string path,int s):filePath(path), size(s) {}
+    File(fs::path path,int s):filePath(path), size(s) {}
 
     friend ostream& operator<<(ostream& os, File& file)
     {
         //change colors to yellow and back
-        os << file.filePath << " (" << YELLOW_TEXT << convertBytes(file.size) << RESET_COLOR <<")";
+        os << file.filePath << RESET_COLOR << " (" << YELLOW_TEXT << convertBytes(file.size) << RESET_COLOR <<")";
         return os;
     }
    bool operator==(File& file)
@@ -91,40 +91,13 @@ public:
     {
         this->filePath = FP;
     }
-    string getPath()
+    fs::path getPath()
     {
         return filePath;
     }
 
    void removeFile() {
-    int size = 0;
-    for (int i = filePath.size(); filePath[i] != '\\'; i--) {
-        size++;
-    }
-
-    // dividing file name from path
-    string tempName;
-    for (int i = filePath.size() - size; i < filePath.size(); i++) {
-        if (filePath[i] != '\\')
-            tempName += filePath[i];
-    }
-    
-    // temporary folder path where we need to delete file
-    string tempPath;
-    for (int i = 0; i < filePath.size() - size; i++) {
-        tempPath += filePath[i];
-    }
-    
-    char* fileName = new char[size + 1];
-    strcpy(fileName, tempName.c_str());
-    
-    for (const auto& dirEntry : fs::recursive_directory_iterator(tempPath)) {
-        if (is_regular_file(dirEntry.path()) && dirEntry.path().filename() == fileName) {
-            remove(dirEntry.path());
-            break;
-        }
-    }
-   
+       fs::remove(filePath);
    
 }
     void setIsCopy(bool newStatus)
@@ -137,18 +110,9 @@ public:
    }
     //checks file type
     bool isOfType(string fileType) {
-        string temp = "";
-
-        //find last dot and save everything after it
-        for (char c : filePath) {
-            if (c == '.') {
-                temp = ".";
-            }
-            else if (temp[0] == '.') {
-                temp += c;
-            }
-        }
-
+        string temp = filePath.extension().generic_string();
+        
+        //compare
         if (temp == fileType) {
             return true;
         }
@@ -163,7 +127,7 @@ public:
         size = s;
     }
 private:
-    string filePath;
+    fs::path filePath;
     bool isCopy = false;
     int size;
 };
