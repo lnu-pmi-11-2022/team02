@@ -9,8 +9,9 @@ using namespace std;
 namespace fs = std::filesystem;
 
 //check if directory is found
-void checkDirectory(string rootDir) {
+void checkDirectory(fs::path rootDir) {
     try {
+
         //check if works without errors
         fs::directory_iterator it = fs::directory_iterator(rootDir);
     }
@@ -41,31 +42,31 @@ public:
 	FileCollector(bool ignore, vector<string> avFileTypes): ignoreDirectories(ignore), avaliableFileTypes(avFileTypes) {}
 
     //constructor with root directory
-    FileCollector(string rootDir) : FileCollector() {
+    FileCollector(fs::path rootDir) : FileCollector() {
         findFiles(rootDir);
     }
     //constructor with root directory based on const char array
     FileCollector(const char rootDir[]) : FileCollector() {
-        findFiles((string)rootDir);
+        findFiles((fs::path)rootDir);
     }
     //constructor with root directory, ignore directories
-    FileCollector(string rootDir, bool ignore) : FileCollector(ignore) {
+    FileCollector(fs::path rootDir, bool ignore) : FileCollector(ignore) {
         findFiles(rootDir);
     }
     //constructor with root directory, ignore directories and avaliable types
-    FileCollector(string rootDir, bool ignore, vector<string> avFileTypes) : FileCollector(ignore, avFileTypes) {
+    FileCollector(fs::path rootDir, bool ignore, vector<string> avFileTypes) : FileCollector(ignore, avFileTypes) {
         findFiles(rootDir);
     }
 
 	//find all files in chosen directory
     //Parameter inner: if true says that findFiles was called recursively
-	bool findFiles(string rootDir, bool inner = false) {
+	bool findFiles(fs::path rootDir, bool inner = false) {
 
 		for (const auto& entry : fs::directory_iterator(rootDir)) {
 			//if is file
 			if (!entry.is_directory()) {
                 //convert path to string
-                string p = entry.path().string();
+                fs::path p = entry.path().string();
 
                 //get file size from entry
                 uintmax_t size = entry.file_size();
@@ -84,7 +85,7 @@ public:
 			//if file is directory and directories are not ignored
 			else if (!ignoreDirectories) {
 				//convert path to string
-				string p = entry.path().string();
+                fs::path p = entry.path().string();
 
 				//go into this directory with inner flag set to true
 				findFiles(p, true);

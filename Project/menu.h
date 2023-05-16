@@ -92,6 +92,7 @@ public:
 		cout << GREEN_BACK << BRIGHT_WHITE_TEXT << "Enter root dir (path):"<< RESET_COLOR << endl;
 		string rootDir;
 		getline(cin, rootDir);
+
 		//check if directory was found
 		checkDirectory(rootDir);
 
@@ -100,7 +101,7 @@ public:
 		fileCollector.setIgnoreDirectories(getIgnoreDirectories());
 		getAvaliableTypes();
 		fileCollector.findFiles(rootDir);
-		cout << "Files in "<<rootDir<<endl<<fileCollector;
+		cout << "Files in "<<rootDir << endl <<fileCollector;
 	}
 
 	void findCopies() {

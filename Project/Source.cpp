@@ -6,6 +6,7 @@
 //Mularchyk Bohdan
 //Fedorniak Serhii
 
+#include <windows.h>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -26,7 +27,8 @@ using namespace std;
 using namespace std;
 using recursive_directory_iterator = std::filesystem::recursive_directory_iterator;
 int main() {
-
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
 	try {
 		Menu menu;
 		menu.opening();
