@@ -29,20 +29,24 @@ using recursive_directory_iterator = std::filesystem::recursive_directory_iterat
 int main() {
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
-	try {
-		Menu menu;
-		menu.opening();
-		menu.getRootDir();
-		menu.findCopies();
-		if (menu.isAnyCopies()) {
-			menu.filesToDelete();
+	Menu menu;
+	menu.opening();
+	while (true) {
+		try {
+			menu.getRootDir();
+			menu.findCopies();
+			if (menu.isAnyCopies()) {
+				menu.filesToDelete();
+			}
+			else {
+				menu.printNoCopiesFound();
+			}
 		}
-		else {
-			menu.printNoCopiesFound();
+		catch (exception& e) {
+			cerr << RED_BACK << BRIGHT_WHITE_TEXT << "Exception: " << e.what() << RESET_COLOR << endl;
 		}
-	}
-	catch (exception& e) {
-		cerr << RED_BACK << BRIGHT_WHITE_TEXT << "Exception: " << e.what() << RESET_COLOR << endl;
+		system("pause");
+		system("CLS");
 	}
 	return 1;
 }
