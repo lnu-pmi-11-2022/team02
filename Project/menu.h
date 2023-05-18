@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <limits>
 #include <string>
 #include <sstream>
 #include <filesystem>
@@ -8,6 +9,7 @@
 #include "copyfinder.h"
 #include<iostream>
 #include <stdlib.h>
+
 
 //colors
 #define GREEN_TEXT "\033[32m" 
@@ -19,6 +21,7 @@
 #define GREEN_BACK "\033[42m"
 #define RED_BACK "\033[41m"
 
+#define MAX_STREAMSIZE 9223372036854775807
 
 using namespace std;
 class Menu {
@@ -31,25 +34,30 @@ public:
 	}
 	bool getIgnoreDirectories() {
 		cout << GREEN_BACK << BRIGHT_WHITE_TEXT << "Press button" << endl << "1- to ignore directories" << endl << "2- not to ignore directories" << RESET_COLOR << endl;
-		int button;
+		char button;
 		cin >> button;
-		if (button == 1) {
+		//if user enters string of chars ignore all except first one
+		std::cin.ignore(MAX_STREAMSIZE, '\n');
+		if (button == '1') {
 			return true;
 		}
-		else if (button == 2) {
+		else if (button == '2') {
 			return false;
 		}
 		else {
-			cout << RED_BACK << BRIGHT_WHITE_TEXT << "Wrong button" << RESET_COLOR << endl;;
+			cout << RED_BACK << BRIGHT_WHITE_TEXT << "Wrong button" << RESET_COLOR << endl;
 			getIgnoreDirectories();
 		}
 	}
 
 	void getAvaliableTypes() {
 		cout<< GREEN_BACK << BRIGHT_WHITE_TEXT << "Press button" << endl << "1- to add to already possible types" << endl << "2- to add your own types" <<endl<<"3- to use default types"<< RESET_COLOR <<endl;
-		int button;
+		char button;
 		cin >> button;
-		if (button == 1) {
+		//if user enters string of chars ignore all except first one
+		std::cin.ignore(MAX_STREAMSIZE, '\n');
+
+		if (button == '1') {
 			vector<string> avaliableFileTypes = fileCollector.getAvaliableTypes();
 			char decision;
 			cout << "Avalible types: " << endl;
@@ -64,9 +72,11 @@ public:
 				fileCollector.addFileType(type);
 				cout << GREEN_BACK << BRIGHT_WHITE_TEXT <<"Press button" << endl << "1-to continue adding types" << endl << "Random key- to stop adding types" << RESET_COLOR << endl;
 				cin>> decision;
+				//if user enters string of chars ignore all except first one
+				std::cin.ignore(MAX_STREAMSIZE, '\n');
 			} while (decision == '1');
 		}
-		else if (button == 2) {
+		else if (button == '2') {
 			vector<string> avaliableFileTypes;
 			fileCollector.setAvaliableFileTypes(avaliableFileTypes);
 			char decision;
@@ -77,9 +87,11 @@ public:
 				fileCollector.addFileType(type);
 				cout << GREEN_BACK << BRIGHT_WHITE_TEXT << "Press button" << endl << "1-to continue adding types" << endl << "Random key- to stop adding types" << RESET_COLOR << endl;
 				cin >> decision;
+				//if user enters string of chars ignore all except first one
+				std::cin.ignore(MAX_STREAMSIZE, '\n');
 			} while (decision == '1');
 		}
-		else if (button == 3) {
+		else if (button == '3') {
 			vector<string> avaliableFileTypes = { ".txt", ".img", ".png", ".mp4" };
 		}
 		else {
@@ -125,14 +137,14 @@ public:
 
 	void filesToDelete() {
 		cout << copyDetector << endl;
-		cout << GREEN_BACK << BRIGHT_WHITE_TEXT << "Please enter indexes of original files whose copies you want to delete" << RESET_COLOR<< endl << GREEN_BACK <<"(Enter -1 to delete all)" << RESET_COLOR << endl;
-		vector<int> inputs;
+		cout << GREEN_BACK << BRIGHT_WHITE_TEXT << "Please enter indexes of original files whose copies you want to delete" << RESET_COLOR<< endl << GREEN_BACK <<"(Enter -1 to delete all, 'c' to cancel deletion)" << RESET_COLOR << endl;
+		vector<string> inputs;
 		//read input to buffer
 		string buffer;
 		getline(cin >> ws, buffer);
 		istringstream iss(buffer);
 		//go through every input divided by space and put it into int data 
-		int data;
+		string data;
 		while (iss >> data)
 			inputs.push_back(data);
 
@@ -141,21 +153,31 @@ public:
 			throw(length_error("Too many indexes"));
 		}
 		//deletion
-		for (int i : inputs) {
+		for (string i : inputs) {
 			
 
 			//if input is -1 delete every copy
-			if (i == -1) {
+			if (i == "-1") {
 				copyDetector.deleteAllCopies();
 				cout << GREEN_TEXT << "Every copy was successfully deleted" << RESET_COLOR << endl;
 				break;
 			}
+			else if (i == "c") {
+				cout << YELLOW_TEXT << "No copies were deleted" << RESET_COLOR << endl;
+				return;
+			}
+			//if input is not a number
+			for (int j = 0; j < i.size(); j++) {
+				if (!isdigit(i[j]))
+					throw(invalid_argument(i + " is not an index"));
+			}
+
 			//index out of range exception
-			if (i >= copyDetector.getCopyPairs().size()) {
+			if ((stoi(i) >= copyDetector.getCopyPairs().size())) {
 				throw(out_of_range("One of indexes is out of range"));
 			}
 			//get father file from copyDetector
-			File file = copyDetector.getCopyPairs()[i].Father;
+			File file = copyDetector.getCopyPairs()[stoi(i)].Father;
 			copyDetector.deleteFatherCopies(file);
 			cout << GREEN_TEXT << "Copies of " << file << GREEN_TEXT << " were successfully deleted" << RESET_COLOR << endl;
 			
