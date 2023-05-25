@@ -51,6 +51,9 @@ public:
     }
     //Basic method for selecting copies and parent elements
     void detector(vector<File> files) {
+        //clear vector
+        CopyPairs.clear();
+
         bool flag;
         for (int i = 0; i < files.size(); i++) {
             flag = false;
